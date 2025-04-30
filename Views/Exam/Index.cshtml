@@ -1,0 +1,170 @@
+﻿@model IEnumerable<Exam>
+@{
+    ViewData["Title"] = "All Exams";
+}
+
+@Html.AntiForgeryToken()
+
+
+<div class="mb-3"></div>
+
+<div class="d-flex flex-wrap justify-content-center gap-3 my-5">
+
+    
+
+    <a class="btn btn-success btn-lg" asp-action="Create" asp-controller="Exam">
+        Create New Exam
+    </a>
+
+    <a class="btn btn-info btn-lg" asp-action="Index" asp-controller="Exam">
+        All Exams
+    </a>
+    <a class="btn btn-primary btn-lg" asp-action="ActiveExams" asp-controller="Exam">
+        Active Exams
+    </a>
+    <a class="btn btn-danger btn-lg" asp-action="DeletedExams" asp-controller="Exam">
+        Deleted Exams
+    </a>
+    
+    
+</div>
+
+<form method="get" asp-action="Search" class="mb-4">
+    <div class="d-flex flex-wrap justify-content-center gap-3 my-5">
+        <div class="col-auto">
+            <label for="Name" class="col-form-label">Enter Exam Name :</label>
+        </div>
+        <div class="col-auto">
+            <input type="text" id="Name" name="Name" class="form-control" placeholder="Search by name" />
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary btn-sm">Search</button>
+        </div>
+    </div>
+</form>
+
+
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning mt-5 text-center">
+        <h4 class="alert-heading">No Exams!</h4>
+        <p class="mb-0">No Exams have been added yet.</p>
+    </div>
+}
+else
+{
+    <div class="container mt-5">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-secondary text-white">
+                <h3 class="text-center mb-0">Exam List</h3>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover align-middle">
+                        <thead class="table-dark">
+                            <tr>
+
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Questions Count</th>
+                                <th>Created At</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var exam in Model)
+                            {
+                                <tr>
+                                    <td>@exam.Id</td>
+                                    <td class="text-start fw-semibold">@exam.Title</td>
+                                    <td class="text-start">@(exam.Description ?? "—")</td>
+                                    <td>@(exam.Questions?.Count ?? 0)</td>
+                                    <td>@exam.CreatedAt.ToString("yyyy-MM-dd HH:mm")</td>
+                                    <td>
+                                        @if (exam.IsDeleted)
+                                        {
+                                            <span class="badge bg-danger">Deleted</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-success">Active</span>
+                                        }
+                                    </td>
+                                    <td>
+
+                                        <a class="btn btn-sm btn-secondary" asp-action="Details"  asp-route-id="@exam.Id" title="Exam Details">
+                                            Details
+                                        </a>
+
+                                        <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@exam.Id" title="Edit Exam">
+                                            Edit
+                                        </a>
+                                        
+                                        <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@exam.Id" title="Delete Exam">
+                                            Delete
+                                        </a>
+                                        
+                                        <a class="btn btn-sm btn-warning" asp-action="UndoDelete" asp-route-id="@exam.Id" title="UndoDelete Exam">
+                                            UndoDelete
+                                        </a>
+
+                                        @* <button onclick="undoDelete(@exam.Id)"> Un</button> *@
+ 
+
+                                    </td>
+                                </tr>
+                            }
+
+
+
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+
+     $.ajaxSetup({
+        headers: {
+            'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+        }
+    });
+
+    var token = $('input[name="__RequestVerificationToken"]').val();
+
+    function undoDelete(examId) {
+        $.ajax({
+            url: '/Exam/AJAxUndoDelete',
+            type: 'POST',
+            data: { id: examId ,
+                    __RequestVerificationToken: token
+            },
+            success: function (response) {
+                if (response.success) {
+                    alert("Undo successful");
+                    // location.reload(); 
+                } else {
+                    alert("Error: " + response.message);
+                }
+            },
+            error: function () {
+                alert("Something went wrong!");
+            }
+        });
+    }
+</script>
+
+

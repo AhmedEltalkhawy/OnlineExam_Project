@@ -1,0 +1,61 @@
+﻿@model int 
+
+@{
+    ViewData["Title"] = "Take Exam";
+}
+
+<h2>Exam</h2>
+<div id="exam-area">
+    <p>Loading question...</p>
+</div>
+
+@section Scripts {
+    <script>
+        let examId = @Model;
+        let answers = {};
+
+        function loadQuestion(examId, index) {
+            $.get('/Exam/GetQuestion', { examId, index }, function (html) {
+                $('#exam-area').html(html);
+                restoreAnswer();
+            });
+        }
+
+        function restoreAnswer() {
+            const qId = $('#exam-area input[type=radio]').data('question-id');
+            if (answers[qId]) {
+                $(`#exam-area input[type=radio][value='${answers[qId]}']`).prop('checked', true);
+            }
+
+            $('#exam-area input[type=radio]').on('change', function () {
+                const selected = $(this).val();
+                answers[qId] = selected;
+            });
+        }
+
+        function submitExam() {
+            const data = {
+                ExamId: examId,
+                Answers: Object.keys(answers).map(qid => ({
+                    QuestionId: parseInt(qid),
+                    SelectedAnswer: answers[qid]
+                }))
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "/Exam/SubmitExam",
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                success: function (res) {
+                    // window.location.href = "/Exam/Result?ExamId=" + res.ExamId;
+                    window.location.href = "/Exam/SubmitSuccess"  ;
+                }
+            });
+        }
+
+        $(function () {
+            loadQuestion(examId, 0);
+        });
+    </script>
+}

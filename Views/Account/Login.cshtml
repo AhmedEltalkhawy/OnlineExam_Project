@@ -1,0 +1,70 @@
+﻿@model LoginUserViewModel
+
+@{
+    ViewData["Title"] = "Login";
+
+}
+
+
+@if (!User.Identity.IsAuthenticated)
+{
+    <div class="d-flex justify-content-center align-items-center vh-100">
+        <div class="card shadow p-4" style="max-width: 400px; width: 100%;">
+            <h2 class="text-center mb-4">Sign In</h2>
+            <form asp-action="SaveLogin">
+
+                <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                <!-- Username Field -->
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-control" placeholder="Enter your username" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <!-- Password Field -->
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label"></label>
+                    <input asp-for="Password" type="password" class="form-control" placeholder="Enter your password" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <!-- Remember Me Checkbox -->
+                <div class="form-check mb-3">
+                    <input class="form-check-input" asp-for="RememberMe" id="rememberMe" />
+                    <label class="form-check-label" for="rememberMe">@Html.DisplayNameFor(model => model.RememberMe)</label>
+                </div>
+
+                <!-- Sign In Button -->
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">Sign In</button>
+                </div>
+
+                <!-- Register Link -->
+                @*    <p class="text-center mt-3">
+                    Not a member?
+                    <a asp-controller="Account" asp-action="Register" class="text-primary fw-bold">Sign Up Now</a>
+                </p> *@
+            </form>
+        </div>
+    </div>
+}
+else
+{
+    <div class="d-flex justify-content-center align-items-center vh-100">
+        <div class="text-center">
+            <h2>Welcome, @User.Identity.Name!</h2>
+            <a asp-controller="Account" asp-action="SignOut" class="btn btn-info mt-3">Sign Out</a>
+        </div>
+    </div>
+}
+
+
+
+
+
+@section Scripts
+{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

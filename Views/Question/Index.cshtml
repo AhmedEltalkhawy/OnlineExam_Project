@@ -1,0 +1,149 @@
+﻿@model IEnumerable<Question>
+@{
+    ViewData["Title"] = "All Questions";
+}
+
+<div class="mb-3"></div>
+
+<div class="d-flex flex-wrap justify-content-center gap-3 my-5">
+
+
+
+    <a class="btn btn-success btn-lg" asp-action="Create" asp-controller="Question">
+        Create New Question
+    </a>
+
+    <a class="btn btn-info btn-lg" asp-action="Index" asp-controller="Question">
+        All Questions
+    </a>
+    <a class="btn btn-primary btn-lg" asp-action="ActiveQuestions" asp-controller="Question">
+        Active Questions
+    </a>
+    <a class="btn btn-danger btn-lg" asp-action="DeletedQuestions" asp-controller="Question">
+        Deleted Question
+    </a>
+
+
+</div>
+
+<form method="get" asp-action="Search" class="mb-4">
+    <div class="d-flex flex-wrap justify-content-center gap-3 my-5">
+        <div class="col-auto">
+            <label for="Name" class="col-form-label">Enter Order Name :</label>
+        </div>
+        <div class="col-auto">
+            <input type="text" id="Name" name="Name" class="form-control" placeholder="Search by name" />
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary btn-sm">Search</button>
+        </div>
+    </div>
+</form>
+
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning mt-5 text-center">
+        <h4 class="alert-heading">No Question!</h4>
+        <p class="mb-0">No Question have been added yet.</p>
+    </div>
+}
+else
+{
+    <div class="container mt-5">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-secondary text-white">
+                <h3 class="text-center mb-0">Question List</h3>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover align-middle">
+                        <thead class="table-dark">
+                            <tr>
+
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Choice A</th>
+                                <th>Choice B</th>
+                                <th>Choice C</th>
+                                <th>Choice D</th>
+                                <th>Correct Answer</th>
+                                @* <th>Exams</th> *@
+                                <th>Status</th>
+                                <th>Actions</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var question in Model)
+                            {
+                                <tr>
+                                    <td>@question.Id</td>
+                                    <td class="text-start">@question.Title</td>
+                                    <td>@question.ChoiceA</td>
+                                    <td>@question.ChoiceB</td>
+                                    <td>@question.ChoiceC</td>
+                                    <td>@question.ChoiceD</td>
+                                    <td class="fw-bold text-primary">@question.CorrectAnswer</td>
+
+@*                                     <td>
+                                        @if (question.Exams != null && question.Exams.Any())
+                                        {
+                                            <ul class="list-unstyled mb-0">
+                                                @foreach (var exam in question.Exams)
+                                                {
+                                                    <li>@exam.Exam?.Title</li> <!-- assuming Exam navigation property -->
+                                                }
+                                            </ul>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">No Exams</span>
+                                        }
+                                    </td>
+ *@                                    <td>
+                                        @if (question.IsDeleted)
+                                        {
+                                            <span class="badge bg-danger">Deleted</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-success">Active</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-sm btn-secondary" asp-action="Details" asp-route-id="@question.Id" title="Details">
+                                            Details
+                                        </a>
+
+                                        <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@question.Id" title="Edit question">
+                                            Edit
+                                        </a>
+
+                                        <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@question.Id" title="Delete question">
+                                            Delete
+                                        </a>
+
+                                        <a class="btn btn-sm btn-warning" asp-action="UndoDelete" asp-route-id="@question.Id" title="UndoDelete question">
+                                            UndoDelete
+                                        </a>
+                                      
+                                    </td>
+                                </tr>
+                            }
+
+
+
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+

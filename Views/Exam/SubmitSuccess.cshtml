@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "Exam Submitted";
+}
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card text-center shadow-lg p-4 border-0" style="max-width: 500px;">
+        <div class="card-body">
+            <div class="mb-4">
+                
+                <h3 class="text-success fw-bold">Exam Submitted Successfully!</h3>
+                <p class="text-muted">Your answers have been saved. You can now view your results or return to the dashboard.</p>
+            </div>
+
+            <div class="d-flex flex-column flex-md-row justify-content-center gap-2">
+                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+﻿@{
+    ViewData["Title"] = "Exam Not Taken";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-10 col-lg-8">
+            <div class="card shadow-lg border-start border-4 border-warning rounded-4">
+                <div class="card-body p-5 text-center">
+                    <i class="bi bi-exclamation-triangle-fill text-warning" style="font-size: 3.5rem;"></i>
+                    <h2 class="mt-4 text-dark"> you do not take this exam to view your result </h2>
+                    <p class="lead mt-3 text-secondary">
+                        At First you must take this exam
+                    </p>
+
+                    <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary mt-3">
+                        Back to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

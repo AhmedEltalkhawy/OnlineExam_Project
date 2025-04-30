@@ -1,0 +1,33 @@
+﻿@model TakeExamStepViewModel
+
+<div id="question-container">
+    <h4>Question @(@Model.QuestionIndex + 1) of @Model.TotalQuestions</h4>
+    <p>@Model.CurrentQuestion.Title</p>
+
+    @foreach (var choice in new[] { "A", "B", "C", "D" })
+    {
+        <div>
+            <input type="radio" name="answer" value="@choice"
+                   id="choice_@choice"
+                   data-question-id="@Model.CurrentQuestion.QuestionId" />
+            <label for="choice_@choice">
+                @choice. @Model.CurrentQuestion.GetType().GetProperty("Choice" + choice)?.GetValue(Model.CurrentQuestion)
+            </label>
+        </div>
+    }
+
+    <div class="mt-3">
+        @if (Model.QuestionIndex > 0)
+        {
+            <button class="btn btn-secondary" onclick="loadQuestion(@Model.ExamId, @Model.QuestionIndex - 1)">Previous</button>
+        }
+        @if (Model.QuestionIndex < Model.TotalQuestions - 1)
+        {
+            <button class="btn btn-primary" onclick="loadQuestion(@Model.ExamId, @Model.QuestionIndex + 1)">Next</button>
+        }
+        else
+        {
+            <button class="btn btn-success" onclick="submitExam()">Submit Exam</button>
+        }
+    </div>
+</div>

@@ -1,0 +1,42 @@
+﻿@model TakeExamViewModel
+@{
+    ViewData["Title"] = "Take Exam";
+}
+
+<h2>@Model.ExamTitle</h2>
+<p>@Model.Description</p>
+
+<form asp-action="SaveTakeExam" method="post">
+
+    <input type="hidden" asp-for="ExamId" value="@Model.ExamId" />
+
+    @for (int i = 0; i < Model.Questions.Count; i++)
+    {
+        <div class="mb-4">
+
+            <h4>@(i + 1). @Model.Questions[i].Title</h4>
+
+            @foreach (var choice in new[] { "A", "B", "C", "D" })
+            {
+                <div class="form-check">
+                    <input class="form-check-input" type="radio"
+                           name="Questions[@i].SelectedAnswer"
+                           value="@choice"
+                           id="q@Model.Questions[i].QuestionId_@choice" />
+                    <label class="form-check-label" for="q@Model.Questions[i].QuestionId_@choice">
+                        @choice. @Model.Questions[i].GetType().GetProperty("Choice" + choice)?.GetValue(Model.Questions[i])
+                    </label>
+                </div>
+            }
+
+            <input type="hidden" asp-for="Questions[@i].QuestionId" value="@Model.Questions[@i].QuestionId" />
+            <span asp-validation-for="Questions[@i].SelectedAnswer" class="text-danger"></span>
+        </div>
+    }
+
+    <button type="submit" class="btn btn-primary">Submit Exam</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

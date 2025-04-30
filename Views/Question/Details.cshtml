@@ -1,0 +1,98 @@
+﻿@model Question
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4"> Question Details</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h4 class="card-title text-primary">@Model.Title</h4>
+            <p class="card-text">
+                <strong>Exam ID:</strong> @Model.Id <br />
+                <strong>IsDeleted:</strong> @Model.IsDeleted
+            </p>
+
+            <p class="card-text">
+                <strong>ChoiceA:</strong> @Model.ChoiceA <br />
+                <strong>ChoiceB:</strong> @Model.ChoiceB <br />
+                <strong>ChoiceC:</strong> @Model.ChoiceC <br />
+                <strong>ChoiceD:</strong> @Model.ChoiceD <br />
+                <strong>CorrectAnswer:</strong> @Model.CorrectAnswer <br />
+            </p>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@Model.Id" title="Edit  Question">
+            Edit
+        </a>
+
+        <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@Model.Id" title="Delete  Question">
+            Delete
+        </a>
+
+        <a class="btn btn-sm btn-warning" asp-action="UndoDelete" asp-route-id="@Model.Id" title="UndoDelete  Question">
+            UndoDelete
+        </a>
+    </div>
+</div>
+
+<div class="container mt-4">
+
+    @if (!Model.Exams.Any())
+    {
+        <div class="alert alert-warning mt-5 text-center">
+            <h4 class="alert-heading">No exam for this  Question !</h4>
+            <p class="mb-0">No exam have been added yet.</p>
+        </div>
+    }
+    else
+    {
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>All Exams</h2>
+        </div>
+
+        <div class="row">
+
+            @if (Model.Exams is not null)
+            {
+                @foreach (var question in Model.Exams)
+                {
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">@question.Exam.Title</h5>
+                                <p class="card-text">
+
+                                    <strong>Safe ID:</strong> @question.Exam.Id <br />
+                                    <strong>IsDeleted:</strong> @question.Exam.IsDeleted
+
+
+                                </p>
+
+                                <a asp-controller="Question" asp-action="RemoveQuestionFromExam" asp-route-examId="@question.ExamId"
+                                   asp-route-questionId="@question.QuestionId" class="btn btn-danger btn-sm">Delete</a>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+
+
+
+            }
+        </div>
+    }
+
+
+</div>
+
+
+
+
+<style>
+    @@media (max-width: 768px) {
+        .card {
+            margin-bottom: 1rem;
+        }
+    }
+</style>

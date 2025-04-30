@@ -1,0 +1,90 @@
+﻿@model Exam
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4"> Exam Details</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h4 class="card-title text-primary">@Model.Title</h4>
+            <p class="card-text">
+                <strong>Exam ID:</strong> @Model.Id <br />
+                <strong>IsDeleted:</strong> @Model.IsDeleted 
+            </p>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@Model.Id" title="Edit Exam">
+            Edit
+        </a>
+
+        <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@Model.Id" title="Delete Exam">
+            Delete
+        </a>
+
+        <a class="btn btn-sm btn-warning" asp-action="UndoDelete" asp-route-id="@Model.Id" title="UndoDelete Exam">
+            UndoDelete
+        </a>
+    </div>
+</div>
+
+<div class="container mt-4">
+
+    @if (!Model.Questions.Any())
+    {
+        <div class="alert alert-warning mt-5 text-center">
+            <h4 class="alert-heading">No Question for this exam !</h4>
+            <p class="mb-0">No Questions have been added yet.</p>
+        </div>
+    }
+    else
+    {
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>All Questions</h2>
+        </div>
+
+        <div class="row">
+
+            @if (Model.Questions is not null)
+            {
+                @foreach (var question in Model.Questions)
+                {
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">@question.Question.Title</h5>
+                                <p class="card-text">
+
+                                    <strong>Safe ID:</strong> @question.Question.Id <br />
+                                    <strong>IsDeleted:</strong> @question.Question.IsDeleted
+
+
+                                </p>
+
+                                <a asp-controller="Exam" asp-action="RemoveQuestionFromExam" asp-route-examId="@question.ExamId"
+                                   asp-route-questionId="@question.QuestionId" class="btn btn-danger btn-sm">Delete</a>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+
+
+
+            }
+        </div>
+    }
+
+    
+</div>
+
+
+
+
+<style>
+    @@media (max-width: 768px) {
+        .card {
+            margin-bottom: 1rem;
+        }
+    }
+</style>

@@ -1,0 +1,79 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+
+/* Start override select2 */
+.select2-container--default .select2-selection--single {
+    background-color: #ffffff; /* white background */
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+}
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 100%;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: #333; /* dark text */
+        line-height: 38px;
+    }
+
+.select2-dropdown.select2-dropdown--below {
+    background-color: #ffffff; /* white dropdown */
+}
+
+.select2-container--default.select2-results__option--highlighted[aria-selected] {
+    background-color: #e0e7ff; /* soft blue highlight */
+    color: #000;
+}
+
+.select2-container--default .select2-results__option[aria-selected=true] {
+    background-color: #c7d2fe; /* selected option */
+    color: #000;
+}
+
+.select2-container--default .select2-selection--single,
+.select2-container--default .select2-selection--multiple {
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+}
+
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+        background-color: #e0e7ff;
+        border: 1px solid #a5b4fc;
+        color: #000;
+    }
+
+    .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
+        color: #000;
+    }
+
+.select2 {
+    width: 100% !important;
+}
+
+/* End override select2 */

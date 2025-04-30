@@ -1,0 +1,31 @@
+﻿@model ExamSubmission
+@{
+    ViewData["Title"] = "Exam Result";
+}
+
+<h2>Result for: @Model.Exam.Title</h2>
+<p>Submitted at: @Model.SubmittedAt</p>
+<p>Total Question: @Model.TotalQuestion</p>
+<p>Correct Answer: @Model.CorrectAnswer</p>
+<p>Wrong   Answer: @Model.WrongAnswer</p>
+
+<p>Score: <strong>@Model.Score</strong>%</p>
+<p>
+    Status: <strong class="@(Model.Passed ? "text-success" : "text-danger")">
+        @(Model.Passed ? "Passed" : "Failed")
+    </strong>
+</p>
+
+<h3>Review Answers:</h3>
+@foreach (var ans in Model.ExamSubmissionAnswers)
+{
+    <div>
+        <strong>@ans.Question.Title</strong><br />
+        Your answer: @ans.SelectedAnswer <br />
+        Correct answer: @ans.Question.CorrectAnswer <br />
+        <span class="@(ans.IsCorrect ? "text-success" : "text-danger")">
+            @(ans.IsCorrect ? "Correct" : "Incorrect")
+        </span>
+    </div>
+    <hr />
+}
